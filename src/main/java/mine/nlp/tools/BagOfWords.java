@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import static mine.nlp.tools.helpers.Utils.mapPretty;
-import static mine.nlp.tools.helpers.Utils.writeStringToFile;
+import static mine.nlp.tools.Utils.mapPretty;
+import static mine.nlp.tools.Utils.writeStringToFile;
 
 /**
  * @date May 20, 2017

@@ -1,4 +1,4 @@
-package mine.nlp.tools.helpers;
+package mine.nlp.tools;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,10 +11,8 @@ import java.util.stream.Collectors;
  * @date May 20, 2017
  * @author vsantamaria
  */
-
 public class Utils {
 
-	
 	public static void writeStringToFile(String text, String path) {
 		try {
 			Files.write(Paths.get(path), text.getBytes(), StandardOpenOption.CREATE);
