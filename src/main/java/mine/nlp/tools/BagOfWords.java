@@ -1,13 +1,8 @@
 package mine.nlp.tools;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,21 +20,6 @@ import static mine.nlp.tools.Utils.writeStringToFile;
 
 public class BagOfWords {
 		
-	public static Map<Integer, String> getInstancesFromCsv(String csvPath, String separator) {
-		File file = new File(csvPath);
-		Map<Integer, String> map = new HashMap<>();
-		try {
-			String line;
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			while ((line = br.readLine()) != null) {
-				String[] fields = line.split(separator);
-				map.put(Integer.parseInt(fields[0]), fields[1]);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return map;
-	}
 
 	public static TreeMap<String, Integer> createDictionary(Map<Integer, String> docs, Boolean addFrequency) {
 		TreeMap<String, Integer> dictionary = new TreeMap<>();
@@ -80,7 +60,7 @@ public class BagOfWords {
 		
 		//load documents from a csv into a map
 		String filePath = "src/main/resources/sentences.csv";
-		Map<Integer, String> docs = getInstancesFromCsv(filePath, "\\t");
+		Map<Integer, String> docs = Utils.getInstancesFromCsv(filePath, "\\t");
 		System.out.println("DOCUMENTS\n(column1=docId : column2=text)\n"+mapPretty(docs));
 		
 		//create a dictionary containing the distinct words in the documents (and optionally their frequency)
