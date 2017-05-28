@@ -3,6 +3,7 @@ package mine.nlp.tools;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +22,13 @@ import static mine.nlp.tools.Utils.writeStringToFile;
 public class BagOfWords {
 		
 
-	public static TreeMap<String, Integer> createDictionary(Map<Integer, String> docs, Boolean addFrequency) {
-		TreeMap<String, Integer> dictionary = new TreeMap<>();
+	public static TreeMap<String, Integer> createDictionary(List<String> docs, Boolean addFrequency) {
 		List<String> tokens = new ArrayList<>();
-		for (String docText : docs.values()) {
+		for (String docText : docs) {
 			tokens.addAll(Arrays.asList(docText.split("\\s+")));
 		}
-
+		
+		TreeMap<String, Integer> dictionary = new TreeMap<>();
 		Set<String> uniqueTokens = new TreeSet<>(tokens);
 		for (String token : uniqueTokens) {
 			Integer frequency = null;
@@ -38,21 +39,39 @@ public class BagOfWords {
 		}
 		return dictionary;
 	}
+	
+	public static TreeMap<String, Integer> createDictionary(Map<Integer, String> docs, Boolean addFrequency) {
+		return createDictionary(new ArrayList<>(docs.values()), addFrequency);
+	}
 
+	
 	public static Map<Integer, Map<String, Integer>> createDocVectors(Map<Integer, String> docs, Map<String, Integer> dictionary) {
 		Map<Integer, Map<String, Integer>> docVectors = new LinkedHashMap<>();
 		for (Integer docId : docs.keySet()) {
-			String[] docTokens = docs.get(docId).split("\\s+");
-			Map<String, Integer> docVector = new TreeMap<>();
-			for (String dictToken : dictionary.keySet()) {
-				Integer freq = Collections.frequency(Arrays.asList(docTokens), dictToken);
-				docVector.put(dictToken, freq);
-			}
-			docVectors.put(docId, docVector);
+			String doc = docs.get(docId);
+			docVectors.put(docId, createDocVector(doc, dictionary));
 		}
 		return docVectors;
 	}
 	
+	public static List<Map<String, Integer>> createDocVectors(List<String> docs, Map<String, Integer> dictionary) {
+		List<Map<String, Integer>> docVectors = new ArrayList<>();
+		for (String doc : docs) {
+		    docVectors.add(createDocVector(doc, dictionary));
+		}
+		return docVectors;
+	}	
+	
+	
+	public static Map<String, Integer> createDocVector(String doc, Map<String, Integer> dictionary) {
+	    String[] docTokens = doc.split("\\s+");
+	    Map<String, Integer> docVector = new HashMap<>();
+	    for (String dictToken : dictionary.keySet()) {
+		    Integer freq = Collections.frequency(Arrays.asList(docTokens), dictToken);
+		    docVector.put(dictToken, freq);
+	    }
+	    return docVector;
+	}
 	
 	
 	
